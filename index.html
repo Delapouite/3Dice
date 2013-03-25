@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>3Dice</title>
+	<style>
+		html, body {
+			height: 100%;
+		}
+		body {
+			background-color: #000;
+			font-family: Arial;
+			overflow: hidden;
+			margin: 0;
+		}
+	</style>
+</head>
+<body>
+	<script src="js/build/three.js"></script>
+	<script src="js/controls/TrackballControls.js"></script>
+	<script src="js/renderers/SVGRenderer.js"></script>
+	<script src="fonts/helvetiker_regular.typeface.js"></script>
+	<script src="fonts/helvetiker_bold.typeface.js"></script>
+	<div id="container"></div>
+	<script>
+		var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 5000);
+		camera.position.z = 1800;
+
+		var scene = new THREE.Scene();
+
+		var renderer = new THREE.WebGLRenderer();
+		renderer.setSize(window.innerWidth, window.innerHeight);
+		renderer.domElement.style.position = 'absolute';
+		document.getElementById('container').appendChild(renderer.domElement);
+
+		var controls = new THREE.TrackballControls(camera, renderer.domElement);
+		controls.rotateSpeed = 0.5;
+		controls.addEventListener('change', render);
+
+		window.addEventListener('resize', onWindowResize, false);
+
+		var dice = new THREE.Mesh(new THREE.IcosahedronGeometry(350, 0));
+		scene.add(dice);
+
+		// add numbers
+		dice.geometry.faces.forEach(function(face, i) {
+			var numberGeometry = new THREE.TextGeometry(i, {
+				size: 100, height: 10, curveSegments: 4,
+				font: 'helvetiker', weight: 'bold', style: 'normal',
+				bevelThickness: 1, bevelSize: 2, bevelEnabled: false,
+				material: 0, extrudeMaterial: 0
+			});
+
+			THREE.GeometryUtils.center(numberGeometry);
+
+			var numberMesh = new THREE.Mesh(numberGeometry);
+			numberMesh.position.copy(face.centroid);
+
+			// lookAwayFrom
+			var v = new THREE.Vector3();
+		 	v.subVectors(numberMesh.position, dice.position).add(numberMesh.position);
+
+			numberMesh.lookAt(v);
+
+			scene.add(numberMesh);
+		});
+
+		animate();
+
+		function onWindowResize() {
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
+			renderer.setSize(window.innerWidth, window.innerHeight);
+		}
+
+		function animate() {
+			requestAnimationFrame(animate);
+			controls.update();
+		}
+
+		function render() {
+			renderer.render(scene, camera);
+		}
+	</script>
+</body>
+</html>
