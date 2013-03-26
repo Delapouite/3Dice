@@ -34,7 +34,7 @@ THREE.SVGRenderer = function () {
 
 	this.autoClear = true;
 	this.sortObjects = true;
-	this.sortElements = true;
+	this.sortElements = false;
 
 	this.info = {
 
