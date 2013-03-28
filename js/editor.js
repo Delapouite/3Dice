@@ -12,7 +12,7 @@ camera.updateProjectionMatrix();
 
 var scene = new THREE.Scene();
 
-var renderer = new THREE.WebGLRenderer();
+var renderer = new THREE.WebGLRenderer({antialias: true, preserveDrawingBuffer: true});
 renderer.setSize(512, 512);
 document.getElementById('container').appendChild(renderer.domElement);
 
@@ -158,6 +158,8 @@ function getAngle() {
 	return eval(document.getElementById('angle').value) * Math.PI;
 }
 
+// HTML Controls
+
 document.getElementById('up').onclick = function() {
 	controls.rotateUp(getAngle());
 };
@@ -172,4 +174,11 @@ document.getElementById('left').onclick = function() {
 
 document.getElementById('down').onclick = function() {
 	controls.rotateDown(getAngle());
+};
+
+document.getElementById('generatePNG').onclick = function() {
+	var img = document.createElement('img');
+	img.src = document.querySelector('canvas').toDataURL('image/png');
+	img.className = "screenshot";
+	document.body.appendChild(img);
 };

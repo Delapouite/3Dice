@@ -16,11 +16,17 @@
 		#container {
 			border: 1px solid #fff;
 			height: 512px;
-			margin: 100px auto;
+			margin: 10px auto;
 			width: 512px;
 		}
 		.controls {
 			text-align: center;
+		}
+		.screenshot {
+			border: 1px solid #fff;
+			height: 64px;
+			margin: 5px;
+			width: 64px;
 		}
 	</style>
 </head>
@@ -29,7 +35,8 @@
 	<div class="controls">
 		<input type="button" id="up" value="Up"/><br />
 		<input type="button" id="left" value="Left"/><input id="angle" size="4" value="1/12"/><input type="button" id="right" value="Right"/><br />
-		<input type="button" id="down" value="Down" />
+		<input type="button" id="down" value="Down" /><br />
+		<input type="button" id="generatePNG" value="Generate PNG" />
 	</div>
 	<script src="js/build/three.js"></script>
 	<script src="js/controls/OrbitControls.js"></script>
