@@ -2,13 +2,13 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-THREE.SVGRenderer = function () {
+THREE.FusedSVGRenderer = function () {
 
-	console.log( 'THREE.SVGRenderer', THREE.REVISION );
+	console.log( 'THREE.FusedSVGRenderer', THREE.REVISION );
 
 	var _this = this,
 	_renderData, _elements, _lights,
-	_projector = new THREE.Projector(),
+	_projector = new THREE.ObjectProjector(),
 	_svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
 	_svgWidth, _svgHeight, _svgWidthHalf, _svgHeightHalf,
 
@@ -364,6 +364,12 @@ THREE.SVGRenderer = function () {
 		} else {
 
 			_svgNode.setAttribute( 'style', 'fill: ' + _color.getStyle() + '; fill-opacity: ' + material.opacity );
+
+			if ( element.object.geometry instanceof THREE.TextGeometry) {
+
+				_svgNode.setAttribute( 'data-object-id', element.object.id);
+
+			}
 
 		}
 

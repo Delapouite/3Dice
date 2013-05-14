@@ -10,10 +10,9 @@
 		body {
 			background-color: #000;
 			font-family: Arial;
-			overflow: hidden;
 			margin: 0;
 		}
-		#container {
+		#container, #raphaelContainer {
 			border: 1px solid #fff;
 			height: 512px;
 			margin: 10px auto;
@@ -32,17 +31,22 @@
 </head>
 <body>
 	<div id="container"></div>
+	<div id="raphaelContainer" style="display:none"></div>
 	<div class="controls">
 		<input type="button" id="up" value="Up"/><br />
 		<input type="button" id="left" value="Left"/><input id="angle" size="4" value="1/12"/><input type="button" id="right" value="Right"/><br />
 		<input type="button" id="down" value="Down" /><br />
-		<input type="button" id="generatePNG" value="Generate PNG" />
+		<input type="button" id="fuseSVG" value="Fuse SVG" style="display:none"/>
+		<input type="button" id="generatePNG" value="Generate PNG" style="display:none"/>
 	</div>
 	<script src="js/build/three.js"></script>
 	<script src="js/controls/OrbitControls.js"></script>
-	<script src="js/renderers/SVGRenderer.js"></script>
+	<script src="js/core/ObjectProjector.js"></script>
+	<script src="js/renderers/FusedSVGRenderer.js"></script>
 	<script src="fonts/helvetiker_regular.typeface.js"></script>
 	<script src="fonts/helvetiker_bold.typeface.js"></script>
+	<script src="js/raphael/raphael.js"></script>
+	<script src="js/raphael/raphael.boolean.js"></script>
 	<script src="js/editor.js"></script>
 </body>
 </html>

@@ -45,7 +45,7 @@ scene.add(diceEdges);
 dice.geometry.faces.forEach(function(face, i) {
 	function addNumber(text) {
 		var numberGeometry = new THREE.TextGeometry(text, {
-			size: 100, height: 0, curveSegments: 10,
+			size: 100, height: 0, curveSegments: 1,
 			font: 'helvetiker', weight: 'bold', style: 'normal',
 			bevelThickness: 1, bevelSize: 2, bevelEnabled: false,
 			material: 0, extrudeMaterial: 0
@@ -158,6 +158,9 @@ function getAngle() {
 	return eval(document.getElementById('angle').value) * Math.PI;
 }
 
+var paper = Raphael('raphaelContainer', 512, 512);
+paper.setViewBox(-256, -256, 512, 512);
+
 // HTML Controls
 
 document.getElementById('up').onclick = function() {
@@ -176,9 +179,39 @@ document.getElementById('down').onclick = function() {
 	controls.rotateDown(getAngle());
 };
 
+/*
 document.getElementById('generatePNG').onclick = function() {
 	var img = document.createElement('img');
 	img.src = document.querySelector('canvas').toDataURL('image/png');
 	img.className = "screenshot";
 	document.body.appendChild(img);
 };
+
+document.getElementById('fuseSVG').onclick = function() {
+	var THREESVG = document.querySelector('#container svg');
+	raphaelSVG = document.querySelector('#raphaelContainer svg');
+	console.log(THREESVG.childNodes.length);
+	// clearing
+	while (raphaelSVG.lastChild) {
+		raphaelSVG.removeChild(raphaelSVG.lastChild);
+	}
+	var paths = {};
+	Array.prototype.forEach.call(THREESVG.childNodes, function(child) {
+		var objectId = child.getAttribute('data-object-id');
+		var path = paper.path(child.getAttribute('d'));
+		path.attr({
+			fill: child.style.fill,
+			stroke: child.style.stroke
+		});
+		if (!paths[objectId]) {
+			paths[objectId] = [];
+		}
+		paths[objectId].push(path);
+	});
+	Object.keys(paths).forEach(function(faces) {
+		faces.forEach(function(face) {
+
+		});
+	});
+};
+*/
