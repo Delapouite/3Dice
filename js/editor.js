@@ -76,10 +76,6 @@ document.getElementById('down').onclick = function() {
 	controls.rotateDown(getAngle());
 };
 
-//var paper = Raphael('raphaelContainer', 512, 512);
-//paper.setViewBox(-256, -256, 512, 512);
-
-/*
 document.getElementById('generatePNG').onclick = function() {
 	var img = document.createElement('img');
 	img.src = document.querySelector('canvas').toDataURL('image/png');
@@ -87,6 +83,7 @@ document.getElementById('generatePNG').onclick = function() {
 	document.body.appendChild(img);
 };
 
+/*
 document.getElementById('fuseSVG').onclick = function() {
 	var THREESVG = document.querySelector('#container svg');
 	raphaelSVG = document.querySelector('#raphaelContainer svg');
