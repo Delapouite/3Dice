@@ -1,6 +1,6 @@
 /* global THREE */
 var Dice = function(type) {
-	this.type = type;
+	this.type = +type;
 	this.mesh = this.getMesh();
 	this.edgesMesh = this.getEdgesMesh();
 };
