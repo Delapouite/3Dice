@@ -41,10 +41,21 @@ Dice.prototype.addToScene = function(scene) {
 	this.populateFaces();
 };
 
+Dice.prototype.removeFromScene = function() {
+	var scene = this.scene;
+	scene.remove(this.mesh);
+	scene.remove(this.edgesMesh);
+	this.marks.forEach(function(mark) {
+		scene.remove(mark);
+	});
+};
+
 Dice.prototype.populateFaces = function() {
 	var mesh = this.mesh,
 		type = this.type,
-		scene = this.scene;
+		scene = this.scene,
+		// numbers or dots
+		marks = [];
 
 	mesh.geometry.faces.forEach(function(face, i) {
 		function addNumber(text) {
@@ -70,6 +81,7 @@ Dice.prototype.populateFaces = function() {
 			numberMesh.lookAt(v);
 			numberMesh.translateZ(1);
 			scene.add(numberMesh);
+			marks.push(numberMesh);
 			return numberMesh;
 		}
 		function addDot(x, y) {
@@ -93,6 +105,7 @@ Dice.prototype.populateFaces = function() {
 			if (y) {
 				dotMesh.translateY(y);
 			}
+			marks.push(dotMesh);
 			return dotMesh;
 		}
 		switch (type) {
@@ -146,4 +159,5 @@ Dice.prototype.populateFaces = function() {
 				break;
 		}
 	});
+	this.marks = marks;
 };
