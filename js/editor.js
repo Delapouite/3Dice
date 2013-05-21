@@ -1,4 +1,5 @@
-/* global THREE */
+/* global THREE, Dice */
+var dice;
 var camera = new THREE.OrthographicCamera(-400, 400, 400, -400, 1, 50000);
 camera.position.z = 5000;
 camera.aspect = 1;
@@ -14,8 +15,13 @@ var controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.rotateSpeed = 0.5;
 controls.addEventListener('change', render);
 
-var dice = new Dice(20);
-dice.addToScene(scene);
+function createDice(type) {
+	if (dice) dice.removeFromScene();
+	dice = new Dice(type);
+	dice.addToScene(scene);
+}
+
+createDice(20);
 
 animate();
 
@@ -36,6 +42,11 @@ function getAngle() {
 //paper.setViewBox(-256, -256, 512, 512);
 
 // HTML Controls
+
+document.getElementById('diceType').onchange = function() {
+	createDice(this.value);
+	render();
+};
 
 document.getElementById('up').onclick = function() {
 	controls.rotateUp(getAngle());
