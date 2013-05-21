@@ -1,19 +1,29 @@
 /* global THREE, Dice */
-var dice;
-var camera = new THREE.OrthographicCamera(-400, 400, 400, -400, 1, 50000);
+var dice, camera, renderer, controls,
+	scene = new THREE.Scene(),
+	container = document.getElementById('container');
+
+camera = new THREE.OrthographicCamera(-400, 400, 400, -400, 1, 50000);
 camera.position.z = 5000;
 camera.aspect = 1;
 camera.updateProjectionMatrix();
 
-var scene = new THREE.Scene();
+function createRenderer(type) {
+	if (type === 'WebGL') {
+		renderer = new THREE.WebGLRenderer({antialias: true, preserveDrawingBuffer: true});
+	} else {
+		renderer = new THREE.FusedSVGRenderer();
+	}
+	renderer.setSize(512, 512);
+	container.innerHTML = '';
+	container.appendChild(renderer.domElement);
 
-var renderer = new THREE.WebGLRenderer({antialias: true, preserveDrawingBuffer: true});
-renderer.setSize(512, 512);
-document.getElementById('container').appendChild(renderer.domElement);
+	controls = new THREE.OrbitControls(camera, renderer.domElement);
+	controls.rotateSpeed = 0.5;
+	controls.addEventListener('change', render);
+}
 
-var controls = new THREE.OrbitControls(camera, renderer.domElement);
-controls.rotateSpeed = 0.5;
-controls.addEventListener('change', render);
+createRenderer('WebGL');
 
 function createDice(type) {
 	if (dice) dice.removeFromScene();
@@ -38,10 +48,12 @@ function getAngle() {
 	return eval(document.getElementById('angle').value) * Math.PI;
 }
 
-//var paper = Raphael('raphaelContainer', 512, 512);
-//paper.setViewBox(-256, -256, 512, 512);
-
 // HTML Controls
+
+document.getElementById('rendererType').onchange = function() {
+	createRenderer(this.value);
+	render();
+};
 
 document.getElementById('diceType').onchange = function() {
 	createDice(this.value);
@@ -63,6 +75,9 @@ document.getElementById('left').onclick = function() {
 document.getElementById('down').onclick = function() {
 	controls.rotateDown(getAngle());
 };
+
+//var paper = Raphael('raphaelContainer', 512, 512);
+//paper.setViewBox(-256, -256, 512, 512);
 
 /*
 document.getElementById('generatePNG').onclick = function() {
