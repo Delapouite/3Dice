@@ -1,4 +1,4 @@
-/* global THREE, Dice */
+/* global THREE, Dice, ClipperLib, normalizeClipperPolygons */
 var dice, camera, renderer, controls,
 	scene = new THREE.Scene(),
 	container = document.getElementById('container');
@@ -83,32 +83,32 @@ document.getElementById('generatePNG').onclick = function() {
 	document.body.appendChild(img);
 };
 
-/*
+var clipper = new ClipperLib.Clipper();
+
 document.getElementById('fuseSVG').onclick = function() {
+	clipper.Clear();
 	var THREESVG = document.querySelector('#container svg');
-	raphaelSVG = document.querySelector('#raphaelContainer svg');
-	console.log(THREESVG.childNodes.length);
-	// clearing
-	while (raphaelSVG.lastChild) {
-		raphaelSVG.removeChild(raphaelSVG.lastChild);
-	}
+	console.log('THREESVG.childNodes.length', THREESVG.childNodes.length);
 	var paths = {};
 	Array.prototype.forEach.call(THREESVG.childNodes, function(child) {
 		var objectId = child.getAttribute('data-object-id');
-		var path = paper.path(child.getAttribute('d'));
-		path.attr({
-			fill: child.style.fill,
-			stroke: child.style.stroke
-		});
+		if (!objectId) return;
 		if (!paths[objectId]) {
 			paths[objectId] = [];
 		}
-		paths[objectId].push(path);
+		paths[objectId].push(child.getAttribute('d'));
 	});
-	Object.keys(paths).forEach(function(faces) {
-		faces.forEach(function(face) {
-
+	var fused = [];
+	Object.keys(paths).forEach(function(key) {
+		var solution = new ClipperLib.Polygons();
+		fused[key] = paths[key].reduce(function(subject, clip) {
+			if (typeof subject == 'string') subject = normalizeClipperPolygons(subject);
+			if (typeof clip == 'string') clip = normalizeClipperPolygons(clip);
+			clipper.AddPolygons(subject, ClipperLib.PolyType.ptSubject);
+			clipper.AddPolygons(clip, ClipperLib.PolyType.ptClip);
+			clipper.Execute(1, solution, 1, 1);
+			console.log(subject, clip, solution);
+			return solution;
 		});
 	});
 };
-*/
