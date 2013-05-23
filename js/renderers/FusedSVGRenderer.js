@@ -316,6 +316,7 @@ THREE.FusedSVGRenderer = function () {
 		_this.info.render.faces ++;
 
 		_svgNode = getPathNode( _pathCount ++ );
+		_svgNode.removeAttribute( 'data-object-id' );
 		_svgNode.setAttribute( 'd', 'M ' + v1.positionScreen.x + ' ' + v1.positionScreen.y + ' L ' + v2.positionScreen.x + ' ' + v2.positionScreen.y + ' L ' + v3.positionScreen.x + ',' + v3.positionScreen.y + 'z' );
 
 		if ( material instanceof THREE.MeshBasicMaterial ) {
