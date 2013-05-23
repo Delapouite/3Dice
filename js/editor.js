@@ -2,6 +2,7 @@
 var dice, camera, renderer, controls,
 	scene = new THREE.Scene(),
 	container = document.getElementById('container'),
+	result = document.getElementById('result'),
 	SVGNS = 'http://www.w3.org/2000/svg';
 
 camera = new THREE.OrthographicCamera(-400, 400, 400, -400, 1, 50000);
@@ -88,19 +89,18 @@ var clipper = new ClipperLib.Clipper();
 
 // to ease clearing
 function createResultSVG() {
-	var resultDiv = document.getElementById('result');
-	resultDiv.innerHTML = '';
+	result.innerHTML = '';
 	var resultSVG = document.createElementNS(SVGNS, 'svg');
 	resultSVG.setAttributeNS(null, 'viewBox', '-256 -256 512 512');
 	resultSVG.setAttributeNS(null, 'width', '512');
 	resultSVG.setAttributeNS(null, 'height', '512');
-	resultDiv.appendChild(resultSVG);
+	result.appendChild(resultSVG);
 	return resultSVG;
 }
 
 document.getElementById('fuseSVG').onclick = function() {
 	var THREESVG = document.querySelector('#container svg');
-	console.log('THREESVG.childNodes.length', THREESVG.childNodes.length);
+	console.log('THREESVG.childNodes.length', THREESVG.childNodes.length, container.innerHTML.length);
 	var paths = {};
 	Array.prototype.forEach.call(THREESVG.childNodes, function(child) {
 		var objectId = child.getAttribute('data-object-id');
@@ -147,7 +147,8 @@ document.getElementById('fuseSVG').onclick = function() {
 		var path = document.createElementNS(SVGNS, 'path');
 		path.setAttribute('data-object-id', i + '_number');
 		path.setAttributeNS(null, 'd', fusion);
-		path.setAttributeNS(null, 'fill', '#' + Math.floor(Math.random()*16777215).toString(16));
+		path.setAttributeNS(null, 'fill', "#" + Math.random().toString(16).slice(2, 8));
 		resultSVG.appendChild(path);
 	});
+	console.log('resultSVG.childNodes.length', resultSVG.childNodes.length, result.innerHTML.length);
 };

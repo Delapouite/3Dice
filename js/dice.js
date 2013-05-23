@@ -60,17 +60,21 @@ Dice.prototype.populateFaces = function() {
 	mesh.geometry.faces.forEach(function(face, i) {
 		function addNumber(text) {
 			var numberGeometry = new THREE.TextGeometry(text, {
-				size: 100, height: 0, curveSegments: 1,
+				size: 100, height: 0, curveSegments: 2,
 				font: 'helvetiker', weight: 'bold', style: 'normal',
-				bevelThickness: 1, bevelSize: 2, bevelEnabled: false,
-				material: 0, extrudeMaterial: 0
+				bevelThickness: 1, bevelSize: 2, bevelEnabled: false
 			});
 
 			THREE.GeometryUtils.center(numberGeometry);
 
+			var numberMaterials = new THREE.MeshFaceMaterial([
+				new THREE.MeshBasicMaterial({color: 0xFF0000, visible: true}),
+				new THREE.MeshBasicMaterial({visible: false})
+			]);
+
 			var numberMesh = new THREE.Mesh(
 				numberGeometry,
-				new THREE.MeshBasicMaterial({color: 0xFF0000, side: 0})
+				numberMaterials
 			);
 			numberMesh.position.copy(face.centroid);
 
@@ -81,6 +85,14 @@ Dice.prototype.populateFaces = function() {
 			numberMesh.lookAt(v);
 			numberMesh.translateZ(1);
 			numberMesh.name = text + '_number';
+
+			// hide back faces with an invisible material
+			for (face in numberMesh.geometry.faces ) {
+				if (numberMesh.geometry.faces[ face ].normal.z === -1) {
+					numberMesh.geometry.faces[ face ].materialIndex = 1;
+				}
+			}
+
 			scene.add(numberMesh);
 			marks.push(numberMesh);
 			return numberMesh;
