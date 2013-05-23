@@ -367,7 +367,7 @@ THREE.FusedSVGRenderer = function () {
 
 			if ( element.object.geometry instanceof THREE.TextGeometry) {
 
-				_svgNode.setAttribute( 'data-object-id', element.object.id);
+				_svgNode.setAttribute( 'data-object-id', element.object.name || element.object.id);
 
 			}
 
