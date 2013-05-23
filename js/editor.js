@@ -132,6 +132,8 @@ document.getElementById('fuseSVG').onclick = function() {
 			clipper.AddPolygons(clip, ClipperLib.PolyType.ptClip);
 
 			clipper.Execute(1, solution, 1, 1);
+			clipper.Clear();
+			clipper.OffsetPolygons(solution, 0, 0, 2, true);
 			// console.log(key);
 			// console.log('subject', subject);
 			// console.log('clip', clip);
