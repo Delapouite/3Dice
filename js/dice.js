@@ -22,7 +22,7 @@ Dice.prototype.getGeometry = function(radius) {
 Dice.prototype.getMesh = function() {
 	return new THREE.Mesh(
 		this.getGeometry(),
-		new THREE.MeshBasicMaterial({color: 0xFFFFFF})
+		new THREE.MeshBasicMaterial({color: 0xFFFFFF, opacity: 0.5})
 	);
 };
 
@@ -30,7 +30,7 @@ Dice.prototype.getMesh = function() {
 Dice.prototype.getEdgesMesh = function() {
 	return new THREE.Mesh(
 		this.getGeometry(352),
-		new THREE.MeshBasicMaterial({color: 0x000000, wireframe: true, wireframeLinewidth: 18})
+		new THREE.MeshBasicMaterial({color: 0x0000FF, opacity: 0.5, wireframe: true, wireframeLinewidth: 18})
 	);
 };
 
@@ -70,7 +70,7 @@ Dice.prototype.populateFaces = function() {
 
 			var numberMesh = new THREE.Mesh(
 				numberGeometry,
-				new THREE.MeshBasicMaterial({color: 0x000000})
+				new THREE.MeshBasicMaterial({color: 0xFF0000, side: 0})
 			);
 			numberMesh.position.copy(face.centroid);
 

@@ -1,7 +1,7 @@
 /* global THREE, Dice, ClipperLib, normalizeClipperPolygons, deserializeClipperPolygonBis, clipperPolygonsToSVGPath */
 var dice, camera, renderer, controls,
 	scene = new THREE.Scene(),
-	container = document.getElementById('container')
+	container = document.getElementById('container'),
 	SVGNS = 'http://www.w3.org/2000/svg';
 
 camera = new THREE.OrthographicCamera(-400, 400, 400, -400, 1, 50000);
@@ -116,7 +116,7 @@ document.getElementById('fuseSVG').onclick = function() {
 	Object.keys(paths).forEach(function(key) {
 		clipper.Clear();
 		console.log(key, paths[key].length);
-		if (parseInt(key) > 4)
+		if (parseInt(key > 4))
 			return;
 		fusions[parseInt(key)] = paths[key].reduce(function(subject, clip) {
 			var solution = new ClipperLib.Polygons();
