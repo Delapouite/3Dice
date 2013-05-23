@@ -1,5 +1,5 @@
-/* global _, Raphael*/
-/* exported normalizeClipperPolygons */
+/* global _, Raphael, ClipperLib */
+/* exported normalizeClipperPolygons, deserializeClipperPolygonBis, clipperPolygonsToSVGPath */
 
 
 /* Input can be JSON-stringified version of the following:
@@ -136,6 +136,41 @@ function SVGPathToClipperPolygons(d) {
       }
     }
     polygons.push(polygon);
+  }
+  return polygons;
+}
+
+function clipperPolygonsToSVGPath(a) {
+  var path = '', i, j, d, scale = 1;
+  for (i = 0; i < a.length; i++) {
+    d = '';
+    for (j = 0; j < a[i].length; j++) {
+      if (j === 0) {
+        d += 'M';
+      } else {
+        d += 'L';
+      }
+      d += (a[i][j].X / scale) + ', ' + (a[i][j].Y / scale);
+    }
+    d += 'Z';
+    path += d;
+  }
+  if (path.trim() === 'Z') path = '';
+
+  return path;
+}
+
+function deserializeClipperPolygonBis(polygonString) {
+  var rawPolygons = JSON.parse(polygonString);
+  var polygons = [[]];
+  for (var i = 0; i < rawPolygons.length; i++) {
+    polygons[i] = [];
+    for (var j = 0; j < rawPolygons[i].length; j++) {
+      if (isNaN(Number(rawPolygons[i][j].X)) || isNaN(Number(rawPolygons[i][j].Y))) {
+        return [[]];
+      }
+      polygons[i].push(new ClipperLib.IntPoint(Math.floor(Number(rawPolygons[i][j].X)), Math.floor(Number(rawPolygons[i][j].Y))));
+    }
   }
   return polygons;
 }

@@ -80,7 +80,7 @@ Dice.prototype.populateFaces = function() {
 
 			numberMesh.lookAt(v);
 			numberMesh.translateZ(1);
-			numberMesh.name = text;
+			numberMesh.name = text + '_number';
 			scene.add(numberMesh);
 			marks.push(numberMesh);
 			return numberMesh;
