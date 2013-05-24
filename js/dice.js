@@ -1,8 +1,10 @@
 /* global THREE */
-var Dice = function(type) {
+var Dice = function(type, edges) {
 	this.type = +type;
 	this.mesh = this.getMesh();
-	this.edgesMesh = this.getEdgesMesh();
+	if (edges) {
+		this.edgesMesh = this.getEdgesMesh();
+	}
 };
 
 Dice.types = {
@@ -22,7 +24,7 @@ Dice.prototype.getGeometry = function(radius) {
 Dice.prototype.getMesh = function() {
 	return new THREE.Mesh(
 		this.getGeometry(),
-		new THREE.MeshBasicMaterial({color: 0xFFFFFF, opacity: 0.5})
+		new THREE.MeshBasicMaterial({color: 0xFFFFFF})
 	);
 };
 
@@ -37,14 +39,18 @@ Dice.prototype.getEdgesMesh = function() {
 Dice.prototype.addToScene = function(scene) {
 	this.scene = scene;
 	scene.add(this.mesh);
-	scene.add(this.edgesMesh);
+	if (this.edgesMesh) {
+		scene.add(this.edgesMesh);
+	}
 	this.populateFaces();
 };
 
 Dice.prototype.removeFromScene = function() {
 	var scene = this.scene;
 	scene.remove(this.mesh);
-	scene.remove(this.edgesMesh);
+	if (this.edgesMesh) {
+		scene.remove(this.edgesMesh);
+	}
 	this.marks.forEach(function(mark) {
 		scene.remove(mark);
 	});
@@ -60,7 +66,7 @@ Dice.prototype.populateFaces = function() {
 	mesh.geometry.faces.forEach(function(face, i) {
 		function addNumber(text) {
 			var numberGeometry = new THREE.TextGeometry(text, {
-				size: 100, height: 0, curveSegments: 2,
+				size: 100, height: 0, curveSegments: 3,
 				font: 'helvetiker', weight: 'bold', style: 'normal',
 				bevelThickness: 1, bevelSize: 2, bevelEnabled: false
 			});
@@ -68,7 +74,7 @@ Dice.prototype.populateFaces = function() {
 			THREE.GeometryUtils.center(numberGeometry);
 
 			var numberMaterials = new THREE.MeshFaceMaterial([
-				new THREE.MeshBasicMaterial({color: 0xFF0000, visible: true}),
+				new THREE.MeshBasicMaterial({color: 0x000000, visible: true}),
 				new THREE.MeshBasicMaterial({visible: false})
 			]);
 
@@ -87,9 +93,9 @@ Dice.prototype.populateFaces = function() {
 			numberMesh.name = text + '_number';
 
 			// hide back faces with an invisible material
-			for (face in numberMesh.geometry.faces ) {
-				if (numberMesh.geometry.faces[ face ].normal.z === -1) {
-					numberMesh.geometry.faces[ face ].materialIndex = 1;
+			for (f in numberMesh.geometry.faces ) {
+				if (numberMesh.geometry.faces[ f ].normal.z === -1) {
+					numberMesh.geometry.faces[ f ].materialIndex = 1;
 				}
 			}
 

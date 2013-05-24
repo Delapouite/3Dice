@@ -99,12 +99,15 @@ function createResultSVG() {
 }
 
 document.getElementById('fuseSVG').onclick = function() {
-	var THREESVG = document.querySelector('#container svg');
-	console.log('THREESVG.childNodes.length', THREESVG.childNodes.length, container.innerHTML.length);
-	var paths = {};
+	var THREESVG = document.querySelector('#container svg'),
+		paths = {},
+		triangles = [];
 	Array.prototype.forEach.call(THREESVG.childNodes, function(child) {
 		var objectId = child.getAttribute('data-object-id');
-		if (!objectId) return;
+		if (!objectId) {
+			triangles.push(child.getAttribute('d'));
+			return;
+		}
 		if (objectId.indexOf('number') === -1) return;
 		if (!paths[objectId]) {
 			paths[objectId] = [];
@@ -140,6 +143,16 @@ document.getElementById('fuseSVG').onclick = function() {
 
 	var resultSVG = createResultSVG();
 
+	triangles.forEach(function(triangle) {
+		var path = document.createElementNS(SVGNS, 'path');
+		path.setAttributeNS(null, 'd', triangle);
+		path.setAttributeNS(null, 'fill', '#fff');
+		path.setAttributeNS(null, 'stroke', '#000');
+		path.setAttributeNS(null, 'stroke-width', 18);
+		path.setAttributeNS(null, 'stroke-linejoin', 'bevel');
+		resultSVG.appendChild(path);
+	});
+
 	fusions.forEach(function(fusion, i) {
 		var area = 0;
 		fusion.forEach(function(polygon) {
@@ -150,8 +163,13 @@ document.getElementById('fuseSVG').onclick = function() {
 		var path = document.createElementNS(SVGNS, 'path');
 		path.setAttribute('data-object-id', i + '_number');
 		path.setAttributeNS(null, 'd', fusion);
-		path.setAttributeNS(null, 'fill', "#" + Math.random().toString(16).slice(2, 8));
+		path.setAttributeNS(null, 'fill', '#000');
 		resultSVG.appendChild(path);
 	});
-	console.log('resultSVG.childNodes.length', resultSVG.childNodes.length, result.innerHTML.length);
+	console.log('THREESVG.childNodes.length, innerHTML.length', THREESVG.childNodes.length, container.innerHTML.length);
+	console.log('resultSVG.childNodes.length, innerHTML.length', resultSVG.childNodes.length, result.innerHTML.length);
+	console.log('reduction percentage',
+		Math.round(resultSVG.childNodes.length * 100 / THREESVG.childNodes.length) + '%',
+		Math.round(result.innerHTML.length * 100 / container.innerHTML.length) + '%'
+	);
 };
