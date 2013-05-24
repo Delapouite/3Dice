@@ -134,10 +134,6 @@ document.getElementById('fuseSVG').onclick = function() {
 			clipper.Execute(1, solution, 1, 1);
 			clipper.Clear();
 			clipper.OffsetPolygons(solution, 0, 0, 2, true);
-			// console.log(key);
-			// console.log('subject', subject);
-			// console.log('clip', clip);
-			// console.log('solution', solution);
 			return solution;
 		});
 	});
@@ -145,6 +141,11 @@ document.getElementById('fuseSVG').onclick = function() {
 	var resultSVG = createResultSVG();
 
 	fusions.forEach(function(fusion, i) {
+		var area = 0;
+		fusion.forEach(function(polygon) {
+			area += ClipperLib.Clipper.Area(polygon);
+		});
+		if (area < 100) return;
 		fusion = clipperPolygonsToSVGPath(fusion);
 		var path = document.createElementNS(SVGNS, 'path');
 		path.setAttribute('data-object-id', i + '_number');
