@@ -103,8 +103,7 @@ function createResultSVG() {
 	result.innerHTML = '';
 	var resultSVG = document.createElementNS(SVGNS, 'svg');
 	resultSVG.setAttributeNS(null, 'viewBox', '-256 -256 512 512');
-	resultSVG.setAttributeNS(null, 'width', '512');
-	resultSVG.setAttributeNS(null, 'height', '512');
+	resultSVG.setAttribute('xmlns', SVGNS);
 	result.appendChild(resultSVG);
 	return resultSVG;
 }
