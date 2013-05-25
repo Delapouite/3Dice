@@ -172,4 +172,7 @@ document.getElementById('fuseSVG').onclick = function() {
 		Math.round(resultSVG.childNodes.length * 100 / THREESVG.childNodes.length) + '%',
 		Math.round(result.innerHTML.length * 100 / container.innerHTML.length) + '%'
 	);
+
+	// populate download link
+	document.getElementById('download').href = 'data:image/svg+xml;utf8,' + result.innerHTML;
 };

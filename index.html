@@ -12,6 +12,9 @@
 			font-family: Arial;
 			margin: 0;
 		}
+		a {
+			color: #fff;
+		}
 		#container, #result {
 			border: 1px solid #fff;
 			height: 512px;
@@ -46,6 +49,8 @@
 		<input type="button" id="down" value="Down" /><br />
 		<input type="button" id="fuseSVG" value="Fuse SVG" />
 		<input type="button" id="generatePNG" value="Generate PNG" />
+		<br />
+		<a id="download" download="dice.svg" href="#" />Download Fused SVG</a>
 	</div>
 	<div id="result"></div>
 	<script src="js/build/three.js"></script>
