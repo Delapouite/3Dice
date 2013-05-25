@@ -148,8 +148,8 @@ document.getElementById('fuseSVG').onclick = function() {
 		path.setAttributeNS(null, 'd', triangle);
 		path.setAttributeNS(null, 'fill', '#fff');
 		path.setAttributeNS(null, 'stroke', '#000');
-		path.setAttributeNS(null, 'stroke-width', 18);
-		path.setAttributeNS(null, 'stroke-linejoin', 'bevel');
+		path.setAttributeNS(null, 'stroke-width', 16);
+		path.setAttributeNS(null, 'stroke-linejoin', 'round');
 		resultSVG.appendChild(path);
 	});
 
