@@ -53,6 +53,17 @@ function getAngle() {
 // HTML Controls
 
 document.getElementById('rendererType').onchange = function() {
+	if (this.value === 'WebGL') {
+		document.getElementById('fuseSVG').style.display = 'none';
+		document.getElementById('generatePNG').style.display = 'inline';
+		document.getElementById('download').style.display = 'none';
+		document.getElementById('result').style.display = 'none';
+	} else {
+		document.getElementById('fuseSVG').style.display = 'inline';
+		document.getElementById('generatePNG').style.display = 'none';
+		document.getElementById('download').style.display = 'inline';
+		document.getElementById('result').style.display = 'block';
+	}
 	createRenderer(this.value);
 	render();
 };
